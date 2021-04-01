@@ -40,7 +40,11 @@ The use of this script will not guarantee any profits and finantial losses may o
 
 ## Contribution
 Give this project a star ⭐  
-Fork and Clone!
+Fork and Clone!  
+If this is useful to you, donations and tips are welcome :blush:  
+- BTC: 1AswM4QMpGSZMH9f4GtLbdCTxcPrVDGorL  
+- ETH: 0xbcc7934ab7b285887be2ee36ab6bf1373619c94c  
+- USDT: 0xbcc7934ab7b285887be2ee36ab6bf1373619c94c  
 
 
 ## License
