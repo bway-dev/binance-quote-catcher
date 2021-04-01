@@ -27,6 +27,7 @@ const cacthFile = 'catch.json'
 
 syncPairs();
 
+// CHECK FOR UPDATES IN YOUR FILE EVERY MINUTE
 setInterval(function(){
     syncPairs()
 }, 60000);
@@ -54,7 +55,6 @@ async function watchPairs() {
         if (pairs[i].totalUSD > 10) {
             
             let candlesticks = await binance.candlesticks(pairs[i].symbol, timeFrame, false, {limit: 1});
-            // [time, open, high, low, close, volume, closeTime, assetVolume, trades, buyBaseVolume, buyAssetVolume, ignored]
             let percentToGo = Math.round((1 - pairs[i].value/candlesticks[0][3]) * 100 * 10) / 10;
             let triggerQuote = Math.round(pairs[i].value * 1.007 * 1000000)/1000000;
 
@@ -75,6 +75,8 @@ async function watchPairs() {
                     console.log('Adding buy order for ' + buyQTY + ' of ' + pairs[i].symbol)
                     const buyOrder = await binance.buy(pairs[i].symbol, buyQTY, pairs[i].value);
                     console.log(buyOrder);
+
+                    // LOCK THIS PAIR TO AVOID NEW ORDER (this lockage is still valid while the script is running as it is stored in an array)
                     lockedPairs.push(pairs[i].symbol);
                 }
             }else {
@@ -82,6 +84,8 @@ async function watchPairs() {
                 if (activeOrders.length > 0) {
                     console.log('removing old order for ' + pairs[i].symbol)
                     const cancelation = await binance.cancelAll(pairs[i].symbol);
+
+                    // AS THE ORDER IS CANCELED LET's FREE THIS SYMBOL FOR NEW ORDERS
                     removeLockedPair(pairs[i].symbol);
                 }
             }
@@ -89,7 +93,7 @@ async function watchPairs() {
     }
 }
 
-
+// CHECK FOR NEW QUOTES EVERY 30 SECONDS
 setInterval(function(){
     console.log(' ')
     watchPairs()
