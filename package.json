@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "node-binance-api": "^0.12.5"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
