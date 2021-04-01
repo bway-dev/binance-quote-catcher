@@ -2,8 +2,8 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
-const Binance = require('node-binance-api')
-const fs = require('fs')
+const Binance = require('node-binance-api');
+const fs = require('fs');
 
 let timeFrame = '15m';
 let startup = 1;
@@ -15,37 +15,26 @@ const binance = new Binance().options({
 });
 
 
-const delay = async (seconds) =>
-  new Promise((resolve) => setTimeout(resolve, seconds * 1000));
-
-
-let pairs
+let pairs;
 
 
 // OPEN LIST
-const cacthFile = 'catch.json'
+const cacthFile = 'catch.json';
 
 syncPairs();
 
-// CHECK FOR UPDATES IN YOUR FILE EVERY MINUTE
-setInterval(function(){
-    syncPairs()
-}, 60000);
 
 console.log('Running...');
 
 function syncPairs() {
     try {
         if (fs.existsSync(cacthFile)) {
-            let symbolData = fs.readFileSync(cacthFile)
-            pairs = JSON.parse(symbolData)
-            if (startup == 1) {
-                watchPairs();
-                startup = 0;
-            }
+            let symbolData = fs.readFileSync(cacthFile);
+            pairs = JSON.parse(symbolData);
+            watchPairs();
         }
     } catch(err) {
-        console.error(err)
+        console.error(err);
     }
 }
 
@@ -72,7 +61,7 @@ async function watchPairs() {
                 const activeOrders = await binance.openOrders(pairs[i].symbol);
 
                 if (activeOrders.length == 0 && !lockedPairs.includes(pairs[i].symbol)) {
-                    console.log('Adding buy order for ' + buyQTY + ' of ' + pairs[i].symbol)
+                    console.log('Adding buy order for ' + buyQTY + ' of ' + pairs[i].symbol);
                     const buyOrder = await binance.buy(pairs[i].symbol, buyQTY, pairs[i].value);
                     console.log(buyOrder);
 
@@ -82,7 +71,7 @@ async function watchPairs() {
             }else {
                 const activeOrders = await binance.openOrders(pairs[i].symbol);
                 if (activeOrders.length > 0) {
-                    console.log('removing old order for ' + pairs[i].symbol)
+                    console.log('removing old order for ' + pairs[i].symbol);
                     const cancelation = await binance.cancelAll(pairs[i].symbol);
 
                     // AS THE ORDER IS CANCELED LET's FREE THIS SYMBOL FOR NEW ORDERS
@@ -91,13 +80,13 @@ async function watchPairs() {
             }
         }
     }
-}
 
-// CHECK FOR NEW QUOTES EVERY 30 SECONDS
-setInterval(function(){
-    console.log(' ')
-    watchPairs()
-}, 30000);
+    // CHECK FOR NEW QUOTES EVERY 30 SECONDS
+    setTimeout(function(){
+        console.log(' ');
+        syncPairs();
+    }, 30000);
+}
 
 
 

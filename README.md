@@ -1,7 +1,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-Everybody had this idea of trying to buy some stock or CC in a red market day. We check one and other, plot some lines, and write down the prices we would like to buy them. Sometimes we choose 10 or more, and most of the time, we just have enough free money to get 2 or 3. In this days we have to place some orders and in most of the cases we see other stocks touching that point we had written down, but the money is still allocated to those other orders. And in the end of the day, we don't buy the chosen ones because they did not sink as much as we expected neither the others that we missed the oportunity to buy.  
+Everybody had this idea of trying to buy some stock or CC in a red market day. We check one and other, plot some lines, and write down the prices we would like to buy them. Sometimes we choose 10 or more, and most of the time, we just have enough free money to get 2 or 3. In these days we have to place some orders and in most of the cases we see other stocks touching that point we had written down, but the money is still allocated to those other orders. And in the end of the day, we don't buy the chosen ones because they did not sink as much as we expected neither the others that we missed the oportunity to buy.  
 
 This is a useful script based on [node-binance-api](https://www.npmjs.com/package/node-binance-api) to allow you to watch multiple crypto currencies with a price target and place automatically a buy order when the symbol quote gets closer (0,7% above) of that target price.  
 On the other hand, if the order is already placed and the price rises again, the order is automatically canceled to free your money for another shot.  
