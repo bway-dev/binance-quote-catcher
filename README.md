@@ -20,7 +20,8 @@ Tips:
 $ npm install
 ```
 
-fill your API KEY and SECRET in .env file. (rename .env-sample)
+fill your API KEY and SECRET in .env file. (rename .env-sample
+
 change `catch.json` to fit your needs
 
 ```
