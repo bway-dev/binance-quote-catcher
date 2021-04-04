@@ -66,13 +66,14 @@ async function watchPairs() {
                             console.log('Adding buy order for ' + buyQTY + ' of ' + pairs[i].symbol);
                             try {
                                 const buyOrder = await binance.buy(pairs[i].symbol, buyQTY, pairs[i].value);
+                                console.log(buyOrder);
+
+                                // LOCK THIS PAIR TO AVOID NEW ORDER (this lockage is still valid while the script is running as it is stored in an array)
+                                lockedPairs.push(pairs[i].symbol);
                             } catch (err) {
                                 console.log('buyOrder: ', err);
                             }
-                            console.log(buyOrder);
 
-                            // LOCK THIS PAIR TO AVOID NEW ORDER (this lockage is still valid while the script is running as it is stored in an array)
-                            lockedPairs.push(pairs[i].symbol);
                         }
                     } catch (err) {
                         console.log('activeOrders: ', err);
