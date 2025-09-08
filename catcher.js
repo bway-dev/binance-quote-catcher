@@ -46,9 +46,9 @@ async function watchPairs() {
 
             try {
                 console.log(pairs[i]);
-                let candlesticks = await binance.candlesticks(pairs[i].symbol, timeFrame, (error, ticks, symbol) => { }, { limit: 1 });
+                let candlesticks = await binance.candlesticks(pairs[i].symbol, timeFrame);
                 const last = candlesticks[candlesticks.length - 1];
-                let percentToGo = Math.round((1 - pairs[i].value / last.high) * 100 * 10) / 10;
+                let percentToGo = Math.round((1 - pairs[i].value / last.close) * 100 * 10) / 10;
                 let triggerQuote = Math.round(pairs[i].value * 1.007 * 1000000) / 1000000;
 
                 if (percentToGo <= 5 && percentToGo > 2) {
