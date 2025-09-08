@@ -4,6 +4,7 @@ dotenv.config();
 
 const Binance = require('node-binance-api');
 const fs = require('fs');
+const { timeStamp } = require('console');
 
 let timeFrame = '15m';
 let startup = 1;
@@ -33,34 +34,35 @@ function syncPairs() {
             pairs = JSON.parse(symbolData);
             watchPairs();
         }
-    } catch(err) {
+    } catch (err) {
         console.error(err);
     }
 }
 
 
 async function watchPairs() {
-    for (let i = 0; i <= pairs.length - 1; i++) {  
+    for (let i = 0; i <= pairs.length - 1; i++) {
         if (pairs[i].totalUSD > 10) {
-            
-            try {
-                let candlesticks = await binance.candlesticks(pairs[i].symbol, timeFrame, false, {limit: 1});
 
-                let percentToGo = Math.round((1 - pairs[i].value/candlesticks[0][3]) * 100 * 10) / 10;
-                let triggerQuote = Math.round(pairs[i].value * 1.007 * 1000000)/1000000;
+            try {
+                console.log(pairs[i]);
+                let candlesticks = await binance.candlesticks(pairs[i].symbol, timeFrame, (error, ticks, symbol) => { }, { limit: 1 });
+                const last = candlesticks[candlesticks.length - 1];
+                let percentToGo = Math.round((1 - pairs[i].value / last.high) * 100 * 10) / 10;
+                let triggerQuote = Math.round(pairs[i].value * 1.007 * 1000000) / 1000000;
 
                 if (percentToGo <= 5 && percentToGo > 2) {
-                console.log('\x1b[0m', pairs[i].symbol, candlesticks[0][3], pairs[i].value, triggerQuote, percentToGo + '%');
-                }else if (percentToGo <= 2) {
-                    console.log('\x1b[1m', pairs[i].symbol, candlesticks[0][3], pairs[i].value, triggerQuote, percentToGo + '%', '\x1b[0m');
-                }else if (percentToGo > 5) {
-                    console.log('\x1b[2m', pairs[i].symbol, candlesticks[0][3], pairs[i].value, triggerQuote, percentToGo + '%', '\x1b[0m');
+                    console.log('\x1b[0m', pairs[i].symbol, last.high, pairs[i].value, triggerQuote, percentToGo + '%');
+                } else if (percentToGo <= 2) {
+                    console.log('\x1b[1m', pairs[i].symbol, last.high, pairs[i].value, triggerQuote, percentToGo + '%', '\x1b[0m');
+                } else if (percentToGo > 5) {
+                    console.log('\x1b[2m', pairs[i].symbol, last.high, pairs[i].value, triggerQuote, percentToGo + '%', '\x1b[0m');
                 }
 
-                if (pairs[i].value * 1.007 >= candlesticks[0][3]) {
+                if (pairs[i].value * 1.007 >= last.high) {
                     let buyQTY = Math.floor((pairs[i].totalUSD / pairs[i].value) * 10) / 10;
                     try {
-                        const activeOrders = await binance.openOrders(pairs[i].symbol);
+                        const activeOrders = await binance.openOrders(pairs[i].symbol, { "timestamp": Date.now() * 1000 });
 
                         if (activeOrders.length == 0 && !lockedPairs.includes(pairs[i].symbol)) {
                             console.log('Adding buy order for ' + buyQTY + ' of ' + pairs[i].symbol);
@@ -78,15 +80,15 @@ async function watchPairs() {
                     } catch (err) {
                         console.log('activeOrders: ', err);
                     }
-                    
-                }else {
+
+                } else {
                     try {
-                        const activeOrders = await binance.openOrders(pairs[i].symbol);
+                        const activeOrders = await binance.openOrders(pairs[i].symbol, { "timestamp": Date.now() * 1000 });
 
                         if (activeOrders.length > 0) {
                             console.log('removing old order for ' + pairs[i].symbol);
                             try {
-                                const cancelation = await binance.cancelAll(pairs[i].symbol);
+                                const cancelation = await binance.cancelAll(pairs[i].symbol, { "timestamp": Date.now() * 1000 });
 
                                 // AS THE ORDER IS CANCELED LET's FREE THIS SYMBOL FOR NEW ORDERS
                                 removeLockedPair(pairs[i].symbol);
@@ -106,7 +108,7 @@ async function watchPairs() {
     }
 
     // CHECK FOR NEW QUOTES EVERY 30 SECONDS
-    setTimeout(function(){
+    setTimeout(function () {
         console.log(' ');
         syncPairs();
     }, 30000);
