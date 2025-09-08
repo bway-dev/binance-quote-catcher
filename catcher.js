@@ -52,14 +52,14 @@ async function watchPairs() {
                 let triggerQuote = Math.round(pairs[i].value * 1.007 * 1000000) / 1000000;
 
                 if (percentToGo <= 5 && percentToGo > 2) {
-                    console.log('\x1b[0m', pairs[i].symbol, last.high, pairs[i].value, triggerQuote, percentToGo + '%');
+                    console.log('\x1b[0m', pairs[i].symbol, last.close, pairs[i].value, triggerQuote, percentToGo + '%');
                 } else if (percentToGo <= 2) {
-                    console.log('\x1b[1m', pairs[i].symbol, last.high, pairs[i].value, triggerQuote, percentToGo + '%', '\x1b[0m');
+                    console.log('\x1b[1m', pairs[i].symbol, last.close, pairs[i].value, triggerQuote, percentToGo + '%', '\x1b[0m');
                 } else if (percentToGo > 5) {
-                    console.log('\x1b[2m', pairs[i].symbol, last.high, pairs[i].value, triggerQuote, percentToGo + '%', '\x1b[0m');
+                    console.log('\x1b[2m', pairs[i].symbol, last.close, pairs[i].value, triggerQuote, percentToGo + '%', '\x1b[0m');
                 }
 
-                if (pairs[i].value * 1.007 >= last.high) {
+                if (pairs[i].value * 1.007 >= last.close) {
                     let buyQTY = Math.floor((pairs[i].totalUSD / pairs[i].value) * 10) / 10;
                     try {
                         const activeOrders = await binance.openOrders(pairs[i].symbol, { "timestamp": Date.now() * 1000 });
