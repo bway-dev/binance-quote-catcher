@@ -1,12 +1,13 @@
 [
-    {"symbol": "AAVEUSDC","value":292.9, "totalUSD": "200"},
-    {"symbol": "ADAUSDC","value":0.838, "totalUSD": "200"},
-    {"symbol": "ATOMUSDC","value":4.38, "totalUSD": "200"},
-    {"symbol": "AVAXUSDC","value":22, "totalUSD": "200"},
-    {"symbol": "FILUSDC","value":2.24, "totalUSD": "200"},
-    {"symbol": "LINKUSDC","value":22, "totalUSD": "200"},
-    {"symbol": "SOLUSDC","value":200.9, "totalUSD": "200"},
-    {"symbol": "TRXUSDC","value":0.305, "totalUSD": "200"},
-    {"symbol": "XLMUSDC","value":0.351, "totalUSD": "200"},
-    {"symbol": "XRPUSDC","value":2.8, "totalUSD": "200"}
+    {"symbol": "AAVEUSDC","value":296.9, "totalUSD": "234"},
+    {"symbol": "ADAUSDC","value":0.838, "totalUSD": "234"},
+    {"symbol": "ATOMUSDC","value":4.38, "totalUSD": "234"},
+    {"symbol": "AVAXUSDC","value":22, "totalUSD": "234"},
+    {"symbol": "FILUSDC","value":2.24, "totalUSD": "234"},
+    {"symbol": "HYPERUSDC","value":0.311, "totalUSD": "234"},
+    {"symbol": "LINKUSDC","value":22, "totalUSD": "234"},
+    {"symbol": "SOLUSDC","value":200.9, "totalUSD": "234"},
+    {"symbol": "TRXUSDC","value":0.305, "totalUSD": "234"},
+    {"symbol": "XLMUSDC","value":0.351, "totalUSD": "234"},
+    {"symbol": "XRPUSDC","value":2.8, "totalUSD": "234"}
 ]

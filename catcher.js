@@ -10,9 +10,10 @@ let timeFrame = '15m';
 let startup = 1;
 let lockedPairs = [];
 
-const binance = new Binance().options({
+const binance = new Binance({
     APIKEY: process.env.API_KEY,
-    APISECRET: process.env.API_SECRET
+    APISECRET: process.env.API_SECRET,
+    test: false, // if you want to use the sandbox/testnet
 });
 
 
